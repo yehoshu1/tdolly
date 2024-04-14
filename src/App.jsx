@@ -1,3 +1,8 @@
+/**
+ * The main React component for the application.
+ * It manages the state of the todo items, provides functionality to toggle, delete, and filter them, and renders the main UI components.
+ * The todo items are stored in the browser's local storage.
+ */
 import "../styles/App.css";
 import "../styles/index.css";
 import NavBar from "../components/NavBar.jsx";
@@ -5,7 +10,7 @@ import SearchForm from "../components/NewTodoForm.jsx";
 import TodoSection from "../components/TodoSection.jsx";
 import { useEffect, useState } from "react";
 
- function App (){
+function App() {
   const [todoItems, setTodoItems] = useState(() => {
     const jsonValue = localStorage.getItem("TODOS");
     if (jsonValue == null) {
@@ -22,6 +27,12 @@ import { useEffect, useState } from "react";
     }
   }, [todoItems]);
 
+  /**
+ * Toggles the completion status of a todo item.
+ *
+ * @param {number} id - The unique identifier of the todo item.
+ * @param {boolean} isDone - The new completion status of the todo item.
+ */
   function toggleTodo(id, isDone) {
     setTodoItems((prev) => {
       return prev.map((todo) => {
@@ -33,10 +44,21 @@ import { useEffect, useState } from "react";
     });
 
   }
+  /**
+ * Deletes a todo item from the list of todo items.
+ *
+ * @param {number} id - The unique identifier of the todo item to be deleted.
+ */
   function deleteTodo(id) {
     setTodoItems((prev) => prev.filter((item) => item.id !== id));
   }
 
+  /**
+ * Filters the list of todo items based on their completion status.
+ *
+ * @param {string} isDone - The completion status to filter by. Can be "all", "true", or "false".
+ * @returns {object[]} - The filtered list of todo items.
+ */
   function filterTodos(isDone) {
     if (isDone === "all") {
       return todoItems;
@@ -46,19 +68,19 @@ import { useEffect, useState } from "react";
   }
 
   return (
-      <>
-        <NavBar />
-        <SearchForm todoItems={todoItems} setTodoItems={setTodoItems} />
-        <TodoSection
-            todoItems={todoItems}
-            setTodoItems={setTodoItems}
-            toggleTodo={toggleTodo}
-            deleteTodo={deleteTodo}
+    <>
+      <NavBar />
+      <SearchForm todoItems={todoItems} setTodoItems={setTodoItems} />
+      <TodoSection
+        todoItems={todoItems}
+        setTodoItems={setTodoItems}
+        toggleTodo={toggleTodo}
+        deleteTodo={deleteTodo}
 
-            filterTodos={filterTodos}
+        filterTodos={filterTodos}
 
-        />
-      </>
+      />
+    </>
   );
 }
 export default App
